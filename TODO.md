@@ -1,0 +1,16 @@
+- [] Operate function
+    - [] Add function
+    - [] Substraction function
+    - [] Divide function
+    - [] Multiply function
+- [] UI
+    - [] Output bar
+    - [] Digit buttons
+    - [] Operation buttons
+    - [] Equals button
+    - [] Clear button
+    - [] Delete button
+- [] Processing 
+    - [] Get values from output bar
+    - [] Show result in output bar
+    - [] (Optional) implement lexical analisys function
