@@ -3,10 +3,10 @@
     - [x] Substraction function
     - [x] Divide function
     - [x] Multiply function
-- [] UI
-    - [] Output bar
-    - [] Digit buttons
-    - [] Operation buttons
+- [x] UI
+    - [x] Output bar
+    - [x] Digit buttons
+    - [x] Operation buttons
     - [] Equals button
     - [] Clear button
     - [] Delete button
