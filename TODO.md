@@ -1,8 +1,8 @@
-- [] Operate function
-    - [] Add function
-    - [] Substraction function
-    - [] Divide function
-    - [] Multiply function
+- [x] Operate function
+    - [x] Add function
+    - [x] Substraction function
+    - [x] Divide function
+    - [x] Multiply function
 - [] UI
     - [] Output bar
     - [] Digit buttons
