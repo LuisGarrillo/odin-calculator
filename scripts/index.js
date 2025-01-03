@@ -26,7 +26,15 @@ function createNumberButton(number) {
 function loadButtons() {
     for (let i = 1; i < 10; i++)
         numbers.appendChild(createNumberButton(i));
-    numbers.appendChild(createNumberButton(0))
+    numbers.appendChild(createNumberButton(0));
+    prepareOperationButtons()
+}
+
+function prepareOperationButtons() {
+    let operationButtons = document.querySelectorAll(".operator");
+    operationButtons.forEach((element) => { 
+        element.addEventListener("click", input)
+    });
 }
 
 const input = event => inputField.textContent += event.target.value;
@@ -37,8 +45,8 @@ function operate(operation, a, b) {
     switch (operation) {
         case "+": return add(a, b);
         case "-": return substract(a, b);
-        case "*": return multiply(a, b);
-        case "/": return divide(a, b);
+        case "×": return multiply(a, b);
+        case "÷": return divide(a, b);
     }
 }
 
