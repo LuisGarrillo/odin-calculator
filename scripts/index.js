@@ -88,6 +88,7 @@ function processOperation() {
     let result;
     try {
         result = (typeof node == "string") ? processValue(node) : evaluateBinaryTree(node);
+        result = Math.round(result * 100) / 100;
     }
     catch (e) {
         result = "Error: Syntax Error";
@@ -111,7 +112,7 @@ function sintaxAnalysis(operation, currentOperator = new Operator("", 0), curren
                 sintaxAnalysis(operation.slice(currentIndex + 1))
             );
         }
-        if (operatorPriority[currentOperator.type] < operatorPriority[operation[currentIndex]])
+        if (operatorPriority[currentOperator.type] <= operatorPriority[operation[currentIndex]])
             currentOperator = new Operator(operation[currentIndex], currentIndex);
     }
     if (currentIndex == operation.length - 1) {
@@ -154,7 +155,6 @@ function evaluateBinaryTree(node) {
     let result;
     try {
         result = operate(node.operator, left, right);
-        result = Math.round(result * 100) / 100;
     }
     catch (e) {
         result = "Error: Zero Division";
