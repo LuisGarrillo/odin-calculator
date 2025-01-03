@@ -13,18 +13,18 @@ const operatorPriority = {
     "-": 2,
     "×": 1,
     "÷": 0,
-};
+}
 
 function Operator(type, index) {
     this.type = type;
     this.index = index;
-};
+}
 
 function TreeNode(operator, left, right) {
     this.operator = operator;
     this.left = left;
     this.right = right;
-};
+}
 
 function loadData() {
     numbers = document.getElementById("numerical");
@@ -54,7 +54,7 @@ function loadButtons() {
         numbers.appendChild(createNumberButton(i));
     numbers.appendChild(createNumberButton(0));
     numbers.appendChild(createNumberButton("."));
-    prepareOperationButtons()
+    prepareOperationButtons();
 }
 
 function prepareOperationButtons() {
@@ -67,13 +67,12 @@ function prepareOperationButtons() {
 const input = event => inputField.textContent += event.target.value;
 const del = () => inputField.textContent = (inputField.textContent.length > 0) ? inputField.textContent.slice(0, inputField.textContent.length - 1) : inputField.textContent;
 const clear = () => {
-    inputField.textContent = ""
+    inputField.textContent = "";
     outputField.textContent = "0";
-};
+}
 
 function processOperation() {
     const operation = inputField.textContent;
-    console.log(operation);
 
     // Create sintax tree
     let node;
@@ -81,10 +80,9 @@ function processOperation() {
         node = sintaxAnalysis(operation);
     }
     catch {
-        outputField.textContent = "Error: Syntax Error"
-        return
+        outputField.textContent = "Error: Syntax Error";
+        return;
     }
-    
 
     // Evaluate sintax tree from bottom to top
     let result;
@@ -92,7 +90,7 @@ function processOperation() {
         result = (typeof node == "string") ? processValue(node) : evaluateBinaryTree(node);
     }
     catch (e) {
-        result = "Error: Syntax Error"
+        result = "Error: Syntax Error";
     }
 
     outputField.textContent = result;
@@ -156,12 +154,12 @@ function evaluateBinaryTree(node) {
     let result;
     try {
         result = operate(node.operator, left, right);
-        result = Math.round(result * 100) / 100
+        result = Math.round(result * 100) / 100;
     }
     catch (e) {
-        result = "Error: Zero Division"
+        result = "Error: Zero Division";
     }
-    return result
+    return result;
 }
 function processValue(value, operator="") {
     if (value == "empty") {
@@ -173,7 +171,7 @@ function processValue(value, operator="") {
     let dotAmount = valueArr.reduce((total, currentValue) => (currentValue == ".") ? total + 1 : total, 0);
     console.log(dotAmount);
     if (dotAmount > 1)
-        throw SyntaxError
+        throw SyntaxError;
     return parseFloat(value);
 }
 
