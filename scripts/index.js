@@ -66,10 +66,12 @@ const del = () => inputField.textContent = (inputField.textContent.length > 0) ?
 const clear = () => inputField.textContent = "";
 
 function processOperation() {
-    let operation = inputField.textContent;
+    const operation = inputField.textContent;
     console.log(operation);
     // Create sintax tree
-    let tree = sintaxAnalysis(operation);
+    const tree = sintaxAnalysis(operation);
+    const result = evaluateBinaryTree(tree);
+    console.log(result);
     // Evaluate sintax tree from bottom to top
 }
 
@@ -97,8 +99,15 @@ function sintaxAnalysis(operation, currentOperator = new Operator("", 0), curren
             );
         }
     }
-
+    
     return sintaxAnalysis(operation, currentOperator, currentIndex + 1);
+}
+
+function evaluateBinaryTree(node) {
+    const left = (typeof node.left == "string") ? parseInt(node.left) : evaluateBinaryTree(node.left);
+    const right = (typeof node.right == "string") ? parseInt(node.right) : evaluateBinaryTree(node.right);
+
+    return operate(node.operator, left, right);
 }
 
 function operate(operation, a, b) {
