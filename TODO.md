@@ -7,10 +7,10 @@
     - [x] Output bar
     - [x] Digit buttons
     - [x] Operation buttons
-    - [] Equals button
-    - [] Clear button
-    - [] Delete button
-- [] Processing 
-    - [] Get values from output bar
-    - [] Show result in output bar
-    - [] (Optional) implement lexical analisys function
+    - [x] Equals button
+    - [x] Clear button
+    - [x] Delete button
+- [x] Processing 
+    - [x] Get values from output bar
+    - [x] Show result in output bar
+    - [x] (Optional) implement lexical analisys function
