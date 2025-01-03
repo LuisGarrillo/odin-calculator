@@ -1,5 +1,6 @@
 let numbers;
 let inputField;
+let outputField;
 let delButton;
 let ansButton;
 let equalButton;
@@ -28,6 +29,7 @@ function TreeNode(operator, left, right) {
 function loadData() {
     numbers = document.getElementById("numerical");
     inputField = document.getElementById("input");
+    outputField = document.getElementById("output")
     delButton = document.getElementById("delete");
     ansButton = document.getElementById("clear");
     equalButton = document.getElementById("equals");
@@ -63,16 +65,22 @@ function prepareOperationButtons() {
 
 const input = event => inputField.textContent += event.target.value;
 const del = () => inputField.textContent = (inputField.textContent.length > 0) ? inputField.textContent.slice(0, inputField.textContent.length - 1) : inputField.textContent;
-const clear = () => inputField.textContent = "";
+const clear = () => {
+    inputField.textContent = ""
+    outputField.textContent = "0";
+};
 
 function processOperation() {
     const operation = inputField.textContent;
     console.log(operation);
+
     // Create sintax tree
     const tree = sintaxAnalysis(operation);
-    const result = evaluateBinaryTree(tree);
-    console.log(result);
+
     // Evaluate sintax tree from bottom to top
+    const result = (typeof tree == "string") ? parseInt(tree) : evaluateBinaryTree(tree);
+
+    outputField.textContent = result;
 }
 
 function sintaxAnalysis(operation, currentOperator = new Operator("", 0), currentIndex = 0) {
@@ -99,6 +107,8 @@ function sintaxAnalysis(operation, currentOperator = new Operator("", 0), curren
             );
         }
     }
+    if (operation.length == 0)
+        return "0";
     
     return sintaxAnalysis(operation, currentOperator, currentIndex + 1);
 }
@@ -106,8 +116,15 @@ function sintaxAnalysis(operation, currentOperator = new Operator("", 0), curren
 function evaluateBinaryTree(node) {
     const left = (typeof node.left == "string") ? parseInt(node.left) : evaluateBinaryTree(node.left);
     const right = (typeof node.right == "string") ? parseInt(node.right) : evaluateBinaryTree(node.right);
-
-    return operate(node.operator, left, right);
+    let result;
+    
+    try {
+        result = operate(node.operator, left, right);
+    }
+    catch (e) {
+        result = "Error: Zero Division"
+    }
+    return result
 }
 
 function operate(operation, a, b) {
@@ -125,6 +142,10 @@ const substract = (a, b) => a - b;
 
 const multiply = (a, b) => a * b;
 
-const divide = (a, b) => a / b;
+const divide = (a, b) => {
+    if (b == 0)
+        throw ZeroDivsionError;
+    return a / b
+};
 
 document.addEventListener("DOMContentLoaded", loadData);
