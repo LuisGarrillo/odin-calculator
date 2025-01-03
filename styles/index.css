@@ -70,7 +70,10 @@ button:hover {
 #numerical button{
     width: 72.75px;
 }
-    
+
+#numerical button[value="0"] {
+    width: 160.5px;
+}
 
 .operation {
     display: flex;

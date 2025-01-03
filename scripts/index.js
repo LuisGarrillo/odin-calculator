@@ -76,10 +76,18 @@ function processOperation() {
     console.log(operation);
 
     // Create sintax tree
-    const node = sintaxAnalysis(operation);
+    let node;
+    try {
+        node = sintaxAnalysis(operation);
+    }
+    catch {
+        outputField.textContent = "Error: Syntax Error"
+        return
+    }
+    
 
     // Evaluate sintax tree from bottom to top
-    let result
+    let result;
     try {
         result = (typeof node == "string") ? processValue(node) : evaluateBinaryTree(node);
     }
@@ -90,8 +98,14 @@ function processOperation() {
     outputField.textContent = result;
 }
 
+const isOperator = token => operators.includes(token);
+
 function sintaxAnalysis(operation, currentOperator = new Operator("", 0), currentIndex = 0) {
-    if (operators.includes(operation[currentIndex])) {
+    if (isOperator(operation[currentIndex])) {
+        if (currentIndex > 0 && currentIndex < operation.length - 1)
+            if (isOperator(operation[currentIndex - 1]) || isOperator(operation[currentIndex + 1]))
+                throw SyntaxError;
+
         if (operatorPriority[operation[currentIndex]] == 2) {
             return new TreeNode(
                 operation[currentIndex], 
@@ -117,7 +131,12 @@ function sintaxAnalysis(operation, currentOperator = new Operator("", 0), curren
     if (operation.length == 0)
         return "empty";
     
-    return sintaxAnalysis(operation, currentOperator, currentIndex + 1);
+    try {
+        return sintaxAnalysis(operation, currentOperator, currentIndex + 1);
+    }
+    catch {
+        throw SyntaxError;
+    }
 }
 
 function evaluateBinaryTree(node) {
