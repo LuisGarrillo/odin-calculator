@@ -1,15 +1,18 @@
 let numbers;
 let inputField;
 let delButton;
+let ansButton;
 
 function loadData() {
     numbers = document.getElementById("numerical");
     inputField = document.getElementById("input");
     delButton = document.getElementById("delete");
+    ansButton = document.getElementById("clear");
 
     loadButtons();
 
     delButton.addEventListener("click", del);
+    ansButton.addEventListener("click", clear);
 }
 
 function createNumberButton(number) {
@@ -28,6 +31,7 @@ function loadButtons() {
 
 const input = event => inputField.textContent += event.target.value;
 const del = () => inputField.textContent = (inputField.textContent.length > 0) ? inputField.textContent.slice(0, inputField.textContent.length - 1) : inputField.textContent;
+const clear = () => inputField.textContent = "";
 
 function operate(operation, a, b) {
     switch (operation) {
