@@ -53,6 +53,7 @@ function loadButtons() {
     for (let i = 1; i < 10; i++)
         numbers.appendChild(createNumberButton(i));
     numbers.appendChild(createNumberButton(0));
+    numbers.appendChild(createNumberButton("."));
     prepareOperationButtons()
 }
 
@@ -75,10 +76,16 @@ function processOperation() {
     console.log(operation);
 
     // Create sintax tree
-    const tree = sintaxAnalysis(operation);
+    const node = sintaxAnalysis(operation);
 
     // Evaluate sintax tree from bottom to top
-    const result = (typeof tree == "string") ? parseInt(tree) : evaluateBinaryTree(tree);
+    let result
+    try {
+        result = (typeof node == "string") ? processValue(node) : evaluateBinaryTree(node);
+    }
+    catch (e) {
+        result = "Error: Syntax Error"
+    }
 
     outputField.textContent = result;
 }
@@ -108,23 +115,47 @@ function sintaxAnalysis(operation, currentOperator = new Operator("", 0), curren
         }
     }
     if (operation.length == 0)
-        return "0";
+        return "empty";
     
     return sintaxAnalysis(operation, currentOperator, currentIndex + 1);
 }
 
 function evaluateBinaryTree(node) {
-    const left = (typeof node.left == "string") ? parseInt(node.left) : evaluateBinaryTree(node.left);
-    const right = (typeof node.right == "string") ? parseInt(node.right) : evaluateBinaryTree(node.right);
+    let left;
+    let right;
+    try {
+        left = (typeof node.left == "string") ? processValue(node.left, node.operator) : evaluateBinaryTree(node.left);
+        right = (typeof node.right == "string") ? processValue(node.right, node.operator) : evaluateBinaryTree(node.right);
+    }
+    catch (e) {
+        return "Error: Syntax Error";
+    }
+
+    if (typeof left == "string" || typeof right == "string")
+        return "Error: Syntax Error";
+   
     let result;
-    
     try {
         result = operate(node.operator, left, right);
+        result = Math.round(result * 100) / 100
     }
     catch (e) {
         result = "Error: Zero Division"
     }
     return result
+}
+function processValue(value, operator="") {
+    if (value == "empty") {
+        if (operator == "×" || operator == "÷")
+            throw SyntaxError;
+        value = "0"
+    }
+    const valueArr = [...value];
+    let dotAmount = valueArr.reduce((total, currentValue) => (currentValue == ".") ? total + 1 : total, 0);
+    console.log(dotAmount);
+    if (dotAmount > 1)
+        throw SyntaxError
+    return parseFloat(value);
 }
 
 function operate(operation, a, b) {
